@@ -15,7 +15,7 @@ async function main() {
 
     // Define the CSV file path
     const csvFilePath = 'scholarData.csv';
-    const defaultColumnWidths = { keyword: 80, title: 80, articleLink: 80, firstName: 80, lastName: 80, scholarLink: 80, address: 80, 'email.text': 80, 'email.href': 80 };
+    const defaultColumnWidths = { keyword: 300, title: 300, articleLink: 300, firstName: 300, lastName: 300, address: 300, country:300 };
     
     // Adjust column widths based on actual data
     scholarData.forEach(item => {
@@ -34,10 +34,8 @@ async function main() {
             { id: 'articleLink', title: 'Article Link' },
             { id: 'firstName', title: 'First Name' },
             { id: 'lastName', title: 'Last Name' },
-            { id: 'scholarLink', title: 'Scholar Link' },
             { id: 'address', title: 'Address' },
-            { id: 'email.text', title: 'Email Text' },
-            { id: 'email.href', title: 'Email Href' },
+            { id: 'country', title: 'Country' },
         ],
     });
 
@@ -73,7 +71,7 @@ async function main() {
 
                         const authorName = hrefElement.textContent.trim();
                         distinctProfileLink.add(scholarLink);
-                        const title = titleElement.textContent.trim();
+                        const title = titleElement.textContent.trim().replace(/,/g, '-');;
                         const articleLink = articleLinkElement ? articleLinkElement.getAttribute("href") : null;
                         data.push({
                             keyword,
@@ -90,11 +88,10 @@ async function main() {
         }, keyword)
         );
         start +=10;
-    }while(scholarData.length < 100);
+    }while(scholarData.length < 10);
 
         // Write the header row
-        // await csvWriter.writeRecords([{ ...csvWriter.header}]);
-
+        await csvWriter.writeRecords([{ ...csvWriter.header}]);
 
         for (const item of scholarData) {
             console.log(`Processing data for keyword: ${item.keyword}`);
@@ -109,20 +106,11 @@ async function main() {
                 const name = nameElement ? nameElement.textContent.trim() : null;
 
                 const addressElement = document.querySelector(".gsc_prf_il");
-                const address = addressElement ? addressElement.textContent.trim() : null;
-
-                const emailElement = document.querySelector("#gsc_prf_ivh");
-                const emailText = emailElement ? emailElement.textContent.trim() : null;
-                const emailHrefElement = emailElement ? emailElement.querySelector("a") : null;
-                const email = {
-                    text: emailText,
-                    href: emailHrefElement ? emailHrefElement.getAttribute("href") || null : null,
-                };
+                const address = addressElement ? addressElement.textContent.trim().replace(/,/g, '-') : null;
 
                 return {
                     name,
                     address,
-                    email,
                 };
             });
 
@@ -140,8 +128,8 @@ async function main() {
             item.firstName = firstName;
             item.lastName = lastName;
             delete item.authorName;
+            delete item.scholarLink;
             item.address = scholarDetails.address;
-            item.email = scholarDetails.email;
 
             // Write the record to the CSV file
             await csvWriter.writeRecords([item]);
