@@ -16,7 +16,7 @@ async function parseCSVAndUpdate(rows) {
 
     for (let i = 2; i < rows.length; i++) {
         const updatedRow = rows[i].split(',');
-        const affiliationText = (updatedRow[5] || '').trim().replace(/^"(.*)"$/, '$1');
+        const affiliationText = (updatedRow[6] || '').trim().replace(/^"(.*)"$/, '$1');
 
         const words = affiliationText.split('-');
         let country = null;
@@ -28,10 +28,13 @@ async function parseCSVAndUpdate(rows) {
                 splitWord = lastWord.split('&');
                 country = await getCountryFromAddress(splitWord[splitWord.length - 1]);
             }
+            if (!country) {
+                firstWord = words[words.length - 2];
+                country = await getCountryFromAddress(firstWord);
+            }
         } else {
             country = await getCountryFromAddress(words);
         }
-
         // Update the row with the extracted country information
         updatedRow[countryIndex] = country;
         rows[i] = updatedRow.join(',');
