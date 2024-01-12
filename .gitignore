@@ -1,1 +1,6 @@
 node_modules/
+venv/
+js files/
+scholar_data.csv
+scholar_data.xlsx
+pycache/
