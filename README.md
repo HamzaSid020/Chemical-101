@@ -35,7 +35,7 @@ Install Dependencies:
 
 bash
 Copy code
-npm install puppeteer-core csv-writer fs axios electron path puppeteer fs.promises exceljs electron-packager --save-dev
+npm install puppeteer-core csv-writer fs axios electron path puppeteer fs.promises exceljs ejs express socket.io --save-dev
 Update package.json:
 
 json
