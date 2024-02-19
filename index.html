@@ -1,0 +1,64 @@
+<!-- index.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Chemical 101</title>
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <img src="chemical_101_logo.webp" alt="Chemical 101 Logo">
+        </div>
+    </header>
+    
+    <main>
+        <form id="searchForm">
+            <label for="keyword">Enter the Keyword:</label>
+            <input type="text" id="keyword" name="keyword" required>
+
+            <label for="minYear">Enter the Minimum year:</label>
+            <select id="minYear" name="minYear" required>
+            </select>
+
+            <label for="numRows">Enter the number of rows:</label>
+            <input type="number" id="numRows" name="numRows" min="1" required>    
+
+            <button onclick="runScript()">Submit</button>
+        </form>
+    </main>
+
+    <script>
+      function runScript() {
+        const keyword = document.getElementById('keyword').value;
+        const minYear = document.getElementById('minYear').value;
+        const numRows = document.getElementById('numRows').value; // Retrieve the number of rows
+        require('electron').ipcRenderer.send('run-script', { keyword, minYear, numRows });
+      }
+
+      function populateYears() {
+            var currentYear = new Date().getFullYear();
+            var selectElement = document.getElementById("minYear");
+
+            // Clear existing options
+            selectElement.innerHTML = "";
+
+            // Populate the dropdown with the last five years
+            for (var i = 0; i < 5; i++) {
+                var option = document.createElement("option");
+                option.value = currentYear - i;
+                option.text = currentYear - i;
+                selectElement.add(option);
+            }
+        }
+
+        // Call the function to populate the dropdown when the page loads
+        populateYears();
+    </script>
+</body>
+</html>
+    
+
