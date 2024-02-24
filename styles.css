@@ -5,8 +5,7 @@ body {
 }
 
 header {
-    background-color: #d81b1b;
-    color: #fff;
+    background:radial-gradient(circle, rgba(250,234,230,0.59156162464986) 18%, rgba(240,50,0,0.4431022408963585) 53%, rgba(16,67,205,1) 90%);
     text-align: center;
     padding: 1rem;
 }
@@ -49,7 +48,7 @@ input, select {
 
 button {
     padding: 0.75rem;
-    background-color: #d81b1b;
+    background-color: #2953f7b2;
     color: #fff;
     border: none;
     cursor: pointer;
@@ -57,5 +56,5 @@ button {
 }
 
 button:hover {
-    background-color: #fb1e1e;
+    background-color: #0022a8b2;
 }

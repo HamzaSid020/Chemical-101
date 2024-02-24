@@ -11,13 +11,18 @@ const SBR_WS_ENDPOINT = "wss://brd-customer-hl_6df5cd9b-zone-chemical101:xtf54l1
 let folderPath ='';
 
 // Async function to execute the main scraping logic
-async function scrapeData(keyword, minYear, numRows) {
+async function main() {
     try {
         console.log("Connecting to Scraping Browser...");
         // Connecting to the Scraping Browser using puppeteer
         const browser = await puppeteer.connect({
             browserWSEndpoint: SBR_WS_ENDPOINT,
         });
+
+        // Defining search parameters
+        const keyword = process.argv[2] || "dysprosium";
+        const minYear = process.argv[3] || 2022;
+        const numRows = process.argv[4];
 
         const currentDate = new Date();
         const formattedTime = `${currentDate.getHours()}_${currentDate.getMinutes()}_${currentDate.getSeconds()}`;
@@ -295,8 +300,8 @@ async function writeToXlsx() {
     console.log('Excel file created Successfully');
 }
 
-module.exports = {
-    scrapeData,
-    parseCSVAndUpdate,
-    writeToXlsx,
-};
+// Execute the main function and handle errors
+main().catch((err) => {
+    console.error(err.stack || err);
+    process.exit(1);
+});
