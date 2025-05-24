@@ -1,41 +1,101 @@
+# Google Scholar Scraper 🚀
 
-Google Scholar Scraper 🚀
+A robust Puppeteer-based web scraper that systematically extracts academic research data from Google Scholar. Handles pagination, proxies, and data export while maintaining clean logging.
 
+![Scraping Demo](https://via.placeholder.com/800x400.png?text=Google+Scholar+Scraper+Demo) <!-- Add actual screenshot URL -->
 
-Welcome to the Google Scholar Scraper, a powerful tool built with Puppeteer, a headless browser automation library. This script takes web scraping to new heights by seamlessly navigating Google Scholar search results, extracting valuable information, and saving it to a CSV file for your research needs.
+## 🌟 Core Features
 
-Key Features 🌟
-Efficient Data Extraction: Utilizes Puppeteer to scrape article titles, links, author names, and scholar details from Google Scholar search results.
+### 📊 Data Extraction
+- Article titles + URLs
+- Author lists + affiliations
+- Publication details (year/journal/citations)
+- Search result snippets
 
-Configurability: Tailor your search with user-defined parameters such as keyword, minimum year, and the number of rows.
+### ⚙️ Configuration Options
+// scholarConfig.js
+module.exports = {
+keyword: 'nanotechnology',
+minYear: 2020,
+maxResults: 200,
+useProxies: true, // Enable rotating proxies
+countryFilter: 'US' // Requires Google API key
+};
 
-CSV Output: Data is neatly organized and saved to a CSV file (scholarData.csv) for easy analysis and integration into your projects.
+## 🛠 Installation
 
-Pagination Handling: Handles pagination intelligently to fetch the desired number of rows.
+1. **Clone Repository**
+git clone https://github.com/HamzaSid020/Chemical-101.git
+cd Chemical-101
 
-Author Details: Hamza Siddiqui, https://www.linkedin.com/in/hamzahmedsiddiqui/
+2. **Install Dependencies**
+npm install puppeteer-core csv-writer axios exceljs --save-dev
 
-Smart File Management: Checks for the existence of the CSV file, appends data if it exists, and writes the header row for new files.
+3. **Configuration**
+Create `.env` file:
+GOOGLE_API_KEY=your_key_here
+PROXY_SERVER=proxy.example.com:8080
 
-Detailed Logging: Keep track of progress and errors through comprehensive logs for a smooth scraping experience.
+## 🚦 Usage
+Basic execution
+npm start -- --keyword "quantum computing" --year 2018 --rows 100
 
-Rotating Proxies 🔄
-Enhance your scraping capabilities with rotating proxies! Check out Bright Data's Rotating Proxies for improved performance.
+With proxy rotation
+npm run start:proxy -- --proxy-list proxies.txt
 
-Country Finder 🌍
-For an enhanced experience, consider obtaining a Google API key to enable the country finder feature.
+Country-specific results
+npm start -- --country-code DE --api-key $GOOGLE_KEY
 
-Getting Started 🚀
-Initialize Project:
-npm init
+## 📂 Data Output Example
+`scholarData.csv` structure:
 
-Install Dependencies:
-npm install puppeteer-core csv-writer fs axios electron path puppeteer fs.promises exceljs ejs express --save-dev
+| Title                          | Link                                     | Authors               | Details                  |
+|--------------------------------|------------------------------------------|-----------------------|--------------------------|
+| Advanced Quantum Algorithms    | https://example.com/paper1              | J. Smith, M. Johnson  | Nature 2023, 120 citations |
+| ...                            | ...                                      | ...                   | ...                      |
 
-Run the Script:
-npm start
+## 🔄 Proxy Integration
+// Enable in scraper.js
+const proxyOptions = {
+address: 'zproxy.lum-superproxy.io',
+port: 22225,
+credentials: 'lum-customer-<id>-zone-zone1:<password>'
+};
 
-License 📜
-This project is licensed under the MIT License.
+**Recommended Providers:**
+- [Bright Data](https://brightdata.com/)
+- [Oxylabs](https://oxylabs.io/)
 
-Happy Scraping! 🌐🤖✨
+## 🌍 Country Filtering
+Requires [Google API Key](https://developers.google.com/maps/documentation/geocoding/get-api-key):
+const geocodeConfig = {
+enabled: true,
+region: 'FR', // ISO country code
+apiKey: process.env.GOOGLE_API_KEY
+};
+
+## 📜 Error Handling
+- Automatic retries (3 attempts)
+- CAPTCHA detection system
+- Rate limiting safeguards
+- Detailed error logs in `/logs`
+
+## 📋 Requirements
+- Node.js 16.x+
+- Chromium browser
+- 2GB+ free memory
+- Stable internet connection
+
+## 📄 License
+MIT License - See [LICENSE](LICENSE) for details
+
+## 🙋♂️ Author
+**Hamza Siddiqui**  
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Profile-blue)](https://www.linkedin.com/in/hamzahmedsiddiqui/) 
+[![GitHub](https://img.shields.io/badge/GitHub-Profile-black)](https://github.com/HamzaSid020)
+
+---
+
+💡 **Pro Tip:** Combine with [Zotero](https://www.zotero.org/) for automated research paper organization!
+
+[![Open in GitHub Codespaces](https://img.shields.io/badge/Open%20in-Codespaces-blue)](https://codespaces.new/HamzaSid020/Chemical-101)
